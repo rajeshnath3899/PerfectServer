@@ -19,6 +19,7 @@
 
 import PerfectLib
 
+let DB_PATH = PerfectServer.staticPerfectServer.homeDir() + serverSQLiteDBs + "StudentDB"
 // This is the function which all Perfect Server modules must expose.
 // The system will load the module and call this function.
 // In here, register any handlers or perform any one-time tasks.
@@ -29,6 +30,31 @@ public func PerfectServerModuleInit() {
 	
 	// Add a default route which lets us serve the static index.html file
 	Routing.Routes["*"] = { _ in return StaticFileHandler() }
+    
+    
+    // Add the endpoint for getting the student details
+    
+    // register a route for gettings posts
+    Routing.Routes["GET", "/names"] = { _ in
+        
+        return GetNamesHandler()
+    }
+    
+    
+    Routing.Routes["GET", "/id/{id}"] = { _ in
+     
+        return  GetIdHandler()
+        
+    }
+    
+    do {
+        
+        let sqlite = try SQLite(DB_PATH)
+        try sqlite.execute("CREATE TABLE IF NOT EXISTS student (id INTEGER PRIMARY KEY, name STRING , course STRING)")
+    } catch {
+        
+        print("Failure creating database at " + DB_PATH)
+    }
 	
 	// Add the endpoint for the WebSocket example system
 	Routing.Routes["GET", "/echo"] = {
@@ -49,6 +75,93 @@ public func PerfectServerModuleInit() {
 		})
 	}
 }
+
+
+class GetNamesHandler: RequestHandler {
+    func handleRequest(request: WebRequest, response: WebResponse) {
+        do {
+            
+            
+            let sqlite = try SQLite(DB_PATH)
+            defer {
+                sqlite.close()  // defer ensures we close our db connection at the end of this request
+            }
+            
+            // query the db for a random post
+            let name = "name"
+            try sqlite.forEachRow("SELECT \(name) FROM student ORDER BY RANDOM()") {
+                (statement: SQLiteStmt, i:Int) -> () in
+                
+                do {
+                    let content = statement.columnText(0)
+                    
+                    // encode the random content into JSON
+                    let jsonEncoder = JSONEncoder()
+                    let respString = try jsonEncoder.encode([name: content])
+                    
+                    // write the JSON to the response body
+                    response.appendBodyString(respString)
+                    response.addHeader("Content-Type", value: "application/json")
+                    response.setStatus(200, message: "OK")
+                } catch {
+                    response.setStatus(400, message: "Bad Request")
+                }
+            }
+            
+        } catch {
+            response.setStatus(400, message: "Bad Request")
+        }
+        
+        response.requestCompletedCallback()
+    }
+}
+
+
+class GetIdHandler: RequestHandler {
+    func handleRequest(request: WebRequest, response: WebResponse) {
+        do {
+            
+            let urlparam = request.urlVariables
+            
+            guard let id = urlparam["id"] else {
+                
+                return
+            }
+            
+            let sqlite = try SQLite(DB_PATH)
+            defer {
+                sqlite.close()  // defer ensures we close our db connection at the end of this request
+            }
+            
+            // query the db for a random post
+            let name = "name"
+            try sqlite.forEachRow("SELECT name FROM student WHERE id == \(id)") {
+                (statement: SQLiteStmt, i:Int) -> () in
+                
+                do {
+                    let content = statement.columnText(0)
+                    
+                    // encode the random content into JSON
+                    let jsonEncoder = JSONEncoder()
+                    let respString = try jsonEncoder.encode([name: content])
+                    
+                    // write the JSON to the response body
+                    response.appendBodyString(respString)
+                    response.addHeader("Content-Type", value: "application/json")
+                    response.setStatus(200, message: "OK")
+                } catch {
+                    response.setStatus(400, message: "Bad Request")
+                }
+            }
+            
+        } catch {
+            response.setStatus(400, message: "Bad Request")
+        }
+        
+        response.requestCompletedCallback()
+    }
+}
+
 
 // A WebSocket service handler must impliment the `WebSocketSessionHandler` protocol.
 // This protocol requires the function `handleSession(request: WebRequest, socket: WebSocket)`.
