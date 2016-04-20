@@ -18,6 +18,23 @@
 //
 
 import PerfectLib
+import MySQL
+import Cocoa
+
+/* MySQL */
+
+// host where mysql server is
+let HOST = "127.0.0.1"
+// mysql username
+let USER = "root"
+// mysql root password
+let PASSWORD = "Apple9916" // make your password something MUCH safer!!!
+// database name
+let SCHEMA = "stpn"
+// table name
+let DONOR_INFO = "Donors"
+let NGO_INFO = "Ngos"
+
 
 let DB_PATH = PerfectServer.staticPerfectServer.homeDir() + serverSQLiteDBs + "StudentDB"
 // This is the function which all Perfect Server modules must expose.
@@ -34,8 +51,8 @@ public func PerfectServerModuleInit() {
     
     // Add the endpoint for getting the student details
     
-    // register a route for gettings posts
-    Routing.Routes["GET", "/names"] = { _ in
+    // register a route for gettings posts for SQlite DB's
+   /* Routing.Routes["GET", "/names"] = { _ in
         
         return GetNamesHandler()
     }
@@ -45,121 +62,232 @@ public func PerfectServerModuleInit() {
      
         return  GetIdHandler()
         
+    }*/
+    
+    // register a route for gettings posts for sechema in  MySQL server
+    
+    
+        Routing.Routes["POST", "/register"] = { _ in
+    
+            return RegistrationHandler()
+        }
+    
+    
+    Routing.Routes["POST", "/login"] = { _ in
+        
+        return  LoginHandler()
+        
     }
     
-    do {
-        
-        let sqlite = try SQLite(DB_PATH)
-        try sqlite.execute("CREATE TABLE IF NOT EXISTS student (id INTEGER PRIMARY KEY, name STRING , course STRING)")
-    } catch {
-        
-        print("Failure creating database at " + DB_PATH)
+    
+    
+    /* Connecting to MySQL schema */
+    
+    
+    
+    let mysql = MySQL()
+    let connected = mysql.connect(HOST, user: USER, password: PASSWORD)
+    guard connected else {
+        // verify we connected successfully
+        print(mysql.errorMessage())
+        return
     }
-	
-	// Add the endpoint for the WebSocket example system
-	Routing.Routes["GET", "/echo"] = {
-		_ in
-		
-		// To add a WebSocket service, set the handler to WebSocketHandler.
-		// Provide your closure which will return your service handler.
-		return WebSocketHandler(handlerProducer: {
-			(request: WebRequest, protocols: [String]) -> WebSocketSessionHandler? in
-			
-			// Check to make sure the client is requesting our "echo" service.
-			guard protocols.contains("echo") else {
-				return nil
-			}
-			
-			// Return our service handler.
-			return EchoHandler()
-		})
-	}
+    
+    // defering close ensure the connection is close when we're done here.
+    defer {
+        mysql.close()
+    }
+    
+    // create DB schema if needed
+    var schemaExists = mysql.selectDatabase(SCHEMA)
+    if !schemaExists {
+        schemaExists = mysql.query("CREATE SCHEMA \(SCHEMA) DEFAULT CHARACTER SET utf8mb4;")
+    }
+    
+//    let tableSuccess = mysql.query("CREATE TABLE IF NOT EXISTS \(DONOR_INFO) (id INT(11) AUTO_INCREMENT, Content varchar(255), PRIMARY KEY (id))")
+    
+    
+    let tableSuccess = mysql.query("CREATE  TABLE \(DONOR_INFO) (id INTEGER   AUTO_INCREMENT PRIMARY KEY NOT NULL , name VARCHAR(40), pwd blob NOT NULL, mobno VARCHAR(15), address VARCHAR(50), mailid VARCHAR(75) NOT NULL, UNIQUE KEY (mailid))")
+    
+    
+    guard schemaExists && tableSuccess else {
+        print(mysql.errorMessage())
+        return
+    }
+    
+    
+    
 }
 
-
-class GetNamesHandler: RequestHandler {
+class RegistrationHandler: RequestHandler {
     func handleRequest(request: WebRequest, response: WebResponse) {
+        
+         let reqData = request.postBodyString
+      
+    
+        let jsonDecoder = JSONDecoder() // JSON decoder
         do {
+            // decode(_:) returns a JSONValue, which is just an alias to Any
+            // because we know the request will be a dictionary, we can just force
+            // the downcast to JSONDictionaryType. In a real production web service,
+            // you would include error checking here to validate the request that it is what
+            // we expect. For the purpose of this tutorial, we're gonna lean
+            // on the side of danger
+            let json = try jsonDecoder.decode(reqData) as! JSONDictionaryType
+            print("received request JSON: \(json.dictionary)")
             
+               // again, error check is VERY important here
             
-            let sqlite = try SQLite(DB_PATH)
-            defer {
-                sqlite.close()  // defer ensures we close our db connection at the end of this request
-            }
+            let name = json.dictionary["name"] as? String
             
-            // query the db for a random post
-            let name = "name"
-            try sqlite.forEachRow("SELECT \(name) FROM student ORDER BY RANDOM()") {
-                (statement: SQLiteStmt, i:Int) -> () in
+            let pwd = json.dictionary["pwd"] as? String
+
+            let mobno = json.dictionary["mobno"] as? String
+
+            let address = json.dictionary["address"] as? String
+
+            let emailId = json.dictionary["mailid"] as? String
+
+            
+            if let name = name ,pwd = pwd , mobno = mobno , address = address , mailid = emailId {
                 
-                do {
-                    let content = statement.columnText(0)
-                    
-                    // encode the random content into JSON
-                    let jsonEncoder = JSONEncoder()
-                    let respString = try jsonEncoder.encode([name: content])
-                    
-                    // write the JSON to the response body
-                    response.appendBodyString(respString)
-                    response.addHeader("Content-Type", value: "application/json")
-                    response.setStatus(200, message: "OK")
-                } catch {
-                    response.setStatus(400, message: "Bad Request")
+             
+                let query = Transactions.insertIntoDonorsTable(name, pwd: pwd, mobno: mobno, address: address, mailid: mailid)
+                
+                guard query.result else {
+                    print(query.errormessage)
+                    response.setStatus(500, message: "Server Error")
+                    response.requestCompletedCallback()
+                    return
                 }
+                
+              
+      
+                
             }
             
-        } catch {
-            response.setStatus(400, message: "Bad Request")
-        }
-        
-        response.requestCompletedCallback()
-    }
-}
-
-
-class GetIdHandler: RequestHandler {
-    func handleRequest(request: WebRequest, response: WebResponse) {
-        do {
-            
-            let urlparam = request.urlVariables
-            
-            guard let id = urlparam["id"] else {
-                
+            else {
+                // bad request, bail out
+                response.setStatus(400, message: "Bad Request")
+                response.requestCompletedCallback()
                 return
             }
+
             
-            let sqlite = try SQLite(DB_PATH)
-            defer {
-                sqlite.close()  // defer ensures we close our db connection at the end of this request
-            }
             
-            // query the db for a random post
-            let name = "name"
-            try sqlite.forEachRow("SELECT name FROM student WHERE id == \(id)") {
-                (statement: SQLiteStmt, i:Int) -> () in
-                
-                do {
-                    let content = statement.columnText(0)
-                    
-                    // encode the random content into JSON
-                    let jsonEncoder = JSONEncoder()
-                    let respString = try jsonEncoder.encode([name: content])
-                    
-                    // write the JSON to the response body
-                    response.appendBodyString(respString)
-                    response.addHeader("Content-Type", value: "application/json")
-                    response.setStatus(200, message: "OK")
-                } catch {
-                    response.setStatus(400, message: "Bad Request")
-                }
-            }
-            
+            response.setStatus(201, message: "Created")
         } catch {
+            print("error decoding json from data: \(reqData)")
             response.setStatus(400, message: "Bad Request")
         }
+    
+        
+            do {
+                // encode the random content into JSON
+                let jsonEncoder = JSONEncoder()
+                let respString = try jsonEncoder.encode(["content": "Successful Registration"])
+                
+                // write the JSON to the response body
+        
+        
+                response.appendBodyString(respString)
+                response.addHeader("Content-Type", value: "application/json")
+                response.setStatus(200, message: "OK")
+            } catch {
+                response.setStatus(500, message: "Server Error")
+            }
         
         response.requestCompletedCallback()
+
+        
+        }
+        
     }
+
+
+class LoginHandler: RequestHandler {
+    func handleRequest(request: WebRequest, response: WebResponse) {
+        do {
+            let reqData = request.postBodyString
+            
+            
+            let jsonDecoder = JSONDecoder() // JSON decoder
+            do {
+                // decode(_:) returns a JSONValue, which is just an alias to Any
+                // because we know the request will be a dictionary, we can just force
+                // the downcast to JSONDictionaryType. In a real production web service,
+                // you would include error checking here to validate the request that it is what
+                // we expect. For the purpose of this tutorial, we're gonna lean
+                // on the side of danger
+                let json = try jsonDecoder.decode(reqData) as! JSONDictionaryType
+                print("received request JSON: \(json.dictionary)")
+                
+                // again, error check is VERY important here
+                
+                let emailId = json.dictionary["mailid"] as? String
+                
+                let pwd = json.dictionary["pwd"] as? String
+                
+                
+                
+                if let pwd = pwd , emailId = emailId {
+                    
+                    
+                    let query = Transactions.validateUser(emailId, password: pwd)
+                    
+                    guard query.result else {
+                        
+                        print(query.errormessage)
+                        response.setStatus(401, message: query.errormessage)
+                        response.requestCompletedCallback()
+                        return
+                    }
+                    
+                    
+                    
+                    
+                }
+                    
+                else {
+                    // bad request, bail out
+                    response.setStatus(400, message: "Bad Request")
+                    response.requestCompletedCallback()
+                    return
+                }
+                
+                
+            } catch {
+                print("error decoding json from data: \(reqData)")
+                response.setStatus(400, message: "Bad Request")
+            }
+            
+            
+            do {
+                // encode the random content into JSON
+                let jsonEncoder = JSONEncoder()
+                let respString = try jsonEncoder.encode(["content": "Successful Login"])
+                
+                // write the JSON to the response body
+                
+                
+                response.appendBodyString(respString)
+                response.addHeader("Content-Type", value: "application/json")
+                response.setStatus(200, message: "OK")
+            } catch {
+                response.setStatus(500, message: "Server Error")
+            }
+            
+            response.requestCompletedCallback()
+            
+            
+        }
+        
+        
+        
+    }
+    
+
+
 }
 
 
@@ -217,6 +345,9 @@ class EchoHandler: WebSocketSessionHandler {
 			}
 		}
 	}
+    
 }
+
+
 
 

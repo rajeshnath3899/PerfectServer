@@ -14,3 +14,5 @@
 #endif /* PerfectServer_Bridging_Header_h */
 
 #import <ifaddrs.h>
+#import <CommonCrypto/CommonCrypto.h>
+

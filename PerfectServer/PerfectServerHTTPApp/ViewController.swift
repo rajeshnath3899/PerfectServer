@@ -40,7 +40,7 @@ class ViewController: NSViewController, NSTextFieldDelegate {
     
 	var serverUrl: String {
 		let appDel = AppDelegate.sharedInstance
-		let url = "http://\(appDel.serverAddress):\(appDel.serverPort)/"
+		let url = "https://\(appDel.serverAddress):\(appDel.serverPort)/"
 		return url
 	}
 	

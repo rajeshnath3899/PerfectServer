@@ -10,13 +10,108 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PerfectServerHTTPApp/AppDelegate.swift"
-            timestampString = "482075580.892338"
+            timestampString = "482857848.469013"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "201"
-            endingLineNumber = "201"
-            landmarkName = "createIndexHtmlFile()"
+            startingLineNumber = "196"
+            endingLineNumber = "196"
+            landmarkName = "startServer(_:address:documentRoot:)"
             landmarkType = "5">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "PerfectServer_HTTP.AppDelegate.(startServer (Swift.UInt16, address : Swift.String, documentRoot : Swift.String) throws -&gt; ()).(closure #1)"
+                  moduleName = "PerfectServer HTTP"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/rajeshnath.cv/PerfectServer/PerfectServer/PerfectServerHTTPApp/AppDelegate.swift"
+                  timestampString = "482858070.963008"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "199"
+                  endingLineNumber = "199"
+                  offsetFromSymbolStart = "2747">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "PerfectServer_HTTP.AppDelegate.(startServer (Swift.UInt16, address : Swift.String, documentRoot : Swift.String) throws -&gt; ()).(closure #1)"
+                  moduleName = "PerfectServer HTTP"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/rajeshnath.cv/PerfectServer/PerfectServer/PerfectServerHTTPApp/AppDelegate.swift"
+                  timestampString = "482858070.963768"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "199"
+                  endingLineNumber = "199"
+                  offsetFromSymbolStart = "3710">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "PerfectServer_HTTP.AppDelegate.(startServer (Swift.UInt16, address : Swift.String, documentRoot : Swift.String) throws -&gt; ()).(closure #1)"
+                  moduleName = "PerfectServer HTTP"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/rajeshnath.cv/PerfectServer/PerfectServer/PerfectServerHTTPApp/AppDelegate.swift"
+                  timestampString = "482858070.964137"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "199"
+                  endingLineNumber = "199"
+                  offsetFromSymbolStart = "3727">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "PerfectHandlers.swift"
+            timestampString = "482857917.783698"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "209"
+            endingLineNumber = "209"
+            landmarkName = "handleRequest(_:response:)"
+            landmarkType = "5">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "PerfectServer_HTTP.LoginHandler.handleRequest (PerfectLib.WebRequest, response : PerfectLib.WebResponse) -&gt; ()"
+                  moduleName = "PerfectServer HTTP"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/rajeshnath.cv/PerfectServer/PerfectServer/PerfectHandlers.swift"
+                  timestampString = "482858070.966312"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "211"
+                  endingLineNumber = "211"
+                  offsetFromSymbolStart = "34">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "protocol witness for PerfectLib.RequestHandler.handleRequest (PerfectLib.WebRequest, response : PerfectLib.WebResponse) -&gt; () in conformance PerfectServer_HTTP.LoginHandler : PerfectLib.RequestHandler in PerfectServer_HTTP"
+                  moduleName = "PerfectServer HTTP"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/rajeshnath.cv/PerfectServer/PerfectServer/PerfectHandlers.swift"
+                  timestampString = "482858070.966716"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "209"
+                  endingLineNumber = "209"
+                  offsetFromSymbolStart = "4">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

@@ -180,7 +180,22 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                  }
                 
 				self.httpServer = HTTPServer(documentRoot: documentRoot)
-				try self.httpServer!.start(port, bindAddress: address)
+                
+                
+                //make a https call
+                
+                
+                let certificatePath = NSBundle.mainBundle().pathForResource("Certificate", ofType: "pem")
+                let privateKeyPath = NSBundle.mainBundle().pathForResource("PrivateKey", ofType: "pem")
+                
+                try self.httpServer!.start(port, sslCert: certificatePath!, sslKey: privateKeyPath!, bindAddress: address)
+                
+                //make a http call
+                
+			//	try self.httpServer!.start(port, bindAddress: address)
+                
+                
+                
 			} catch let e {
 				print("Exception in server run loop \(e) \(address):\(port)")
 			}
@@ -196,6 +211,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 	}
     
     
+    
+   
     
     
     func createIndexHtmlFile () throws {
@@ -216,4 +233,5 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
 }
+
 

@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		842029AC1CC7D6BC001F6C8B /* Certificate.pem in Resources */ = {isa = PBXBuildFile; fileRef = 842029AA1CC7D6BC001F6C8B /* Certificate.pem */; };
+		842029AD1CC7D6BC001F6C8B /* PrivateKey.pem in Resources */ = {isa = PBXBuildFile; fileRef = 842029AB1CC7D6BC001F6C8B /* PrivateKey.pem */; };
+		842029B11CC7D71B001F6C8B /* MySqlTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 842029B01CC7D71B001F6C8B /* MySqlTransaction.swift */; };
 		8425F6011CBA0D4200E71752 /* PerfectHandlers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8425F5FE1CBA0D4200E71752 /* PerfectHandlers.swift */; };
 		8425F63A1CBBB6B900E71752 /* index.html in Resources */ = {isa = PBXBuildFile; fileRef = 8425F6391CBBB6B900E71752 /* index.html */; };
 		8425F6611CBBDA9700E71752 /* PerfectLib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8425F65C1CBBDA3800E71752 /* PerfectLib.framework */; };
@@ -39,6 +42,20 @@
 			remoteGlobalIDString = F8F28A381BD5633100367249;
 			remoteInfo = PerfectLibiOS;
 		};
+		8459E3981CC7D51B008A2D73 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8459E3931CC7D51B008A2D73 /* MySQL.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = F832F6211BD6821D008593A8;
+			remoteInfo = MySQL;
+		};
+		8459E39A1CC7D51B008A2D73 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8459E3931CC7D51B008A2D73 /* MySQL.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = F832F62B1BD6821D008593A8;
+			remoteInfo = MySQLTests;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -55,10 +72,14 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		842029AA1CC7D6BC001F6C8B /* Certificate.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = Certificate.pem; path = Certificates/Certificate.pem; sourceTree = "<group>"; };
+		842029AB1CC7D6BC001F6C8B /* PrivateKey.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = PrivateKey.pem; path = Certificates/PrivateKey.pem; sourceTree = "<group>"; };
+		842029B01CC7D71B001F6C8B /* MySqlTransaction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MySqlTransaction.swift; sourceTree = SOURCE_ROOT; };
 		8425F5F21CB9FC0E00E71752 /* PerfectServer-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "PerfectServer-Bridging-Header.h"; sourceTree = "<group>"; };
 		8425F5FE1CBA0D4200E71752 /* PerfectHandlers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PerfectHandlers.swift; sourceTree = SOURCE_ROOT; };
 		8425F6391CBBB6B900E71752 /* index.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = index.html; sourceTree = "<group>"; };
 		8425F6551CBBDA3800E71752 /* PerfectLib.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = PerfectLib.xcodeproj; path = PerfectLib/PerfectLib.xcodeproj; sourceTree = SOURCE_ROOT; };
+		8459E3931CC7D51B008A2D73 /* MySQL.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = MySQL.xcodeproj; path = MySQL/MySQL.xcodeproj; sourceTree = SOURCE_ROOT; };
 		D8E865781C14709000730D32 /* WindowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WindowController.swift; sourceTree = "<group>"; };
 		F84242281BD9691B001EFF66 /* main_fcgi.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = main_fcgi.swift; sourceTree = SOURCE_ROOT; };
 		F88B06811BDD48DD001FD0CD /* PerfectServer HTTP.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "PerfectServer HTTP.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -110,9 +131,28 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		8459E3781CC7D216008A2D73 /* Certificates */ = {
+			isa = PBXGroup;
+			children = (
+				842029AA1CC7D6BC001F6C8B /* Certificate.pem */,
+				842029AB1CC7D6BC001F6C8B /* PrivateKey.pem */,
+			);
+			name = Certificates;
+			sourceTree = "<group>";
+		};
+		8459E3941CC7D51B008A2D73 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				8459E3991CC7D51B008A2D73 /* MySQL.framework */,
+				8459E39B1CC7D51B008A2D73 /* MySQLTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		F84242121BD966FC001EFF66 = {
 			isa = PBXGroup;
 			children = (
+				8459E3781CC7D216008A2D73 /* Certificates */,
 				F842421D1BD966FC001EFF66 /* PerfectServer */,
 				F88B06821BDD48DD001FD0CD /* PerfectServerHTTPApp */,
 				F84242271BD96767001EFF66 /* Linked */,
@@ -132,6 +172,8 @@
 		F842421D1BD966FC001EFF66 /* PerfectServer */ = {
 			isa = PBXGroup;
 			children = (
+				842029B01CC7D71B001F6C8B /* MySqlTransaction.swift */,
+				8459E3931CC7D51B008A2D73 /* MySQL.xcodeproj */,
 				8425F6481CBBD98600E71752 /* PerfectLib */,
 				8425F5FE1CBA0D4200E71752 /* PerfectHandlers.swift */,
 				F8E752E81BDA944000BFC36A /* main.swift */,
@@ -211,6 +253,10 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
+					ProductGroup = 8459E3941CC7D51B008A2D73 /* Products */;
+					ProjectRef = 8459E3931CC7D51B008A2D73 /* MySQL.xcodeproj */;
+				},
+				{
 					ProductGroup = 8425F6561CBBDA3800E71752 /* Products */;
 					ProjectRef = 8425F6551CBBDA3800E71752 /* PerfectLib.xcodeproj */;
 				},
@@ -244,6 +290,20 @@
 			remoteRef = 8425F65F1CBBDA3800E71752 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		8459E3991CC7D51B008A2D73 /* MySQL.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = MySQL.framework;
+			remoteRef = 8459E3981CC7D51B008A2D73 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		8459E39B1CC7D51B008A2D73 /* MySQLTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = MySQLTests.xctest;
+			remoteRef = 8459E39A1CC7D51B008A2D73 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 /* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
@@ -253,7 +313,9 @@
 			files = (
 				8425F63A1CBBB6B900E71752 /* index.html in Resources */,
 				F88B06881BDD48DD001FD0CD /* Assets.xcassets in Resources */,
+				842029AC1CC7D6BC001F6C8B /* Certificate.pem in Resources */,
 				F88B068B1BDD48DD001FD0CD /* Main.storyboard in Resources */,
+				842029AD1CC7D6BC001F6C8B /* PrivateKey.pem in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -265,6 +327,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F88B06861BDD48DD001FD0CD /* ViewController.swift in Sources */,
+				842029B11CC7D71B001F6C8B /* MySqlTransaction.swift in Sources */,
 				D8E865791C14709000730D32 /* WindowController.swift in Sources */,
 				8425F6011CBA0D4200E71752 /* PerfectHandlers.swift in Sources */,
 				F88B06841BDD48DD001FD0CD /* AppDelegate.swift in Sources */,

@@ -675,8 +675,18 @@
                         <subviews>
                             <visualEffectView appearanceType="vibrantLight" fixedFrame="YES" blendingMode="behindWindow" state="followsWindowActiveState" translatesAutoresizingMaskIntoConstraints="NO" id="6ua-th-fw2">
                                 <rect key="frame" x="0.0" y="0.0" width="470" height="271"/>
+                                <subviews>
+                                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="m6M-KF-Wwe">
+                                        <rect key="frame" x="117" y="152" width="230" height="29"/>
+                                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Perfect Server HTTPS" id="jND-mY-mtV">
+                                            <font key="font" size="24" name=".AppleSystemUIFontThin"/>
+                                            <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                        </textFieldCell>
+                                    </textField>
+                                </subviews>
                             </visualEffectView>
-                            <customView translatesAutoresizingMaskIntoConstraints="NO" id="ada-Hf-fCn">
+                            <customView ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ada-Hf-fCn">
                                 <rect key="frame" x="20" y="62" width="430" height="40"/>
                                 <subviews>
                                     <textField focusRingType="none" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Y8v-Jh-XDU">
@@ -732,15 +742,7 @@
                                 </constraints>
                                 <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="AppIcon" id="Nvy-Bg-vcn"/>
                             </imageView>
-                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="m6M-KF-Wwe">
-                                <rect key="frame" x="131" y="154" width="209" height="29"/>
-                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Perfect Server HTTP" id="jND-mY-mtV">
-                                    <font key="font" size="24" name=".AppleSystemUIFontThin"/>
-                                    <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
-                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                                </textFieldCell>
-                            </textField>
-                            <customView translatesAutoresizingMaskIntoConstraints="NO" id="UdY-lZ-nuY">
+                            <customView ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="UdY-lZ-nuY">
                                 <rect key="frame" x="20" y="102" width="430" height="44"/>
                                 <subviews>
                                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Xsg-Tc-BAy">
@@ -800,7 +802,7 @@
                                     <constraint firstAttribute="trailing" secondItem="b81-uc-1hK" secondAttribute="trailing" constant="20" id="zwX-e3-CQ5"/>
                                 </constraints>
                             </customView>
-                            <customView translatesAutoresizingMaskIntoConstraints="NO" id="Fsh-Xl-7Ln">
+                            <customView ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Fsh-Xl-7Ln">
                                 <rect key="frame" x="74" y="16" width="323" height="40"/>
                                 <subviews>
                                     <customView translatesAutoresizingMaskIntoConstraints="NO" id="uZC-wD-sGy" userLabel="Start Stop Color Background">
@@ -858,10 +860,7 @@
                             <constraint firstItem="Fsh-Xl-7Ln" firstAttribute="top" secondItem="ada-Hf-fCn" secondAttribute="bottom" constant="6" id="5aQ-Pe-IUy"/>
                             <constraint firstItem="UdY-lZ-nuY" firstAttribute="leading" secondItem="m2S-Jp-Qdl" secondAttribute="leading" constant="20" id="GRn-wd-xrK"/>
                             <constraint firstItem="Fsh-Xl-7Ln" firstAttribute="centerX" secondItem="ada-Hf-fCn" secondAttribute="centerX" id="IMj-QZ-cwW"/>
-                            <constraint firstItem="m6M-KF-Wwe" firstAttribute="centerX" secondItem="m2S-Jp-Qdl" secondAttribute="centerX" id="LoT-7R-4QV"/>
-                            <constraint firstItem="UdY-lZ-nuY" firstAttribute="top" secondItem="m6M-KF-Wwe" secondAttribute="bottom" constant="8" id="SxJ-ki-PIP"/>
                             <constraint firstItem="RHm-AV-UR6" firstAttribute="centerX" secondItem="m2S-Jp-Qdl" secondAttribute="centerX" id="a8W-4M-FRx"/>
-                            <constraint firstItem="m6M-KF-Wwe" firstAttribute="top" secondItem="RHm-AV-UR6" secondAttribute="bottom" constant="4" id="aCh-1Y-dwD"/>
                             <constraint firstItem="RHm-AV-UR6" firstAttribute="top" secondItem="m2S-Jp-Qdl" secondAttribute="top" constant="14" id="atH-FA-WNL"/>
                             <constraint firstItem="ada-Hf-fCn" firstAttribute="trailing" secondItem="UdY-lZ-nuY" secondAttribute="trailing" id="dYa-bx-ir0"/>
                             <constraint firstItem="ada-Hf-fCn" firstAttribute="leading" secondItem="UdY-lZ-nuY" secondAttribute="leading" id="sca-GQ-iNX"/>
