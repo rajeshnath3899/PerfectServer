@@ -32,6 +32,7 @@ let UNAUTHORIZED = "Unauthorized"    //401
 let FORBIDDEN = "Forbidden"          //403
 let NOT_FOUND = "Not Found"          //404
 let CONFLICT = "Conflict"            //409
+let SERVER_ERROR = "Server Error"    //500
 
 // This is the function which all Perfect Server modules must expose.
 // The system will load the module and call this function.
@@ -226,7 +227,7 @@ func setResponseStatus(response:WebResponse, httpstatusCode:Int,httpstatusMessag
         
     } catch {
         
-        response.setStatus(500, message: "Server Error")
+        response.setStatus(500, message: SERVER_ERROR)
     }
     
     response.requestCompletedCallback()
