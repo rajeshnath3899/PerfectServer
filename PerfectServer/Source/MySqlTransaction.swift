@@ -17,7 +17,7 @@ let HOST = "127.0.0.1"
 // mysql username
 let USER = "root"
 // mysql root password
-let PASSWORD = "Apple9916" // make your password something MUCH safer!!!
+let PASSWORD = "stpn277" // make your password something MUCH safer!!!
 // database name
 let SCHEMA = "stpn"
 // table name
@@ -127,7 +127,7 @@ class Transactions {
         }
         
         let results = mysql.storeResults()!
-        var content:String!
+        var content = ""
         
          results.forEachRow { row in
                 // each row is a of type MySQL.MySQL.Results.Type.Element

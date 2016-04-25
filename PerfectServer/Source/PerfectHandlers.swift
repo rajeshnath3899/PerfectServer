@@ -21,6 +21,18 @@ import PerfectLib
 import MySQL
 import Cocoa
 
+
+
+//HTTP response status
+
+let OK = "OK"                        //200
+let CREATED = "Created"              //201
+let BAD_REQUEST = "Bad Request"      //400
+let UNAUTHORIZED = "Unauthorized"    //401
+let FORBIDDEN = "Forbidden"          //403
+let NOT_FOUND = "Not Found"          //404
+let CONFLICT = "Conflict"            //409
+
 // This is the function which all Perfect Server modules must expose.
 // The system will load the module and call this function.
 // In here, register any handlers or perform any one-time tasks.
@@ -66,7 +78,6 @@ class RegistrationHandler: RequestHandler {
     func handleRequest(request: WebRequest, response: WebResponse) {
         
          let reqData = request.postBodyString
-         var statusMessage = "success"
     
         let jsonDecoder = JSONDecoder() // JSON decoder
         do {
@@ -93,9 +104,9 @@ class RegistrationHandler: RequestHandler {
                 
                 guard query.result else {
                     print(query.errormessage)
-                    response.setStatus(500, message: "Server Error")
-                    statusMessage = "failed"
-                    response.requestCompletedCallback()
+                    
+                    setResponseStatus(response, httpstatusCode: 409, httpstatusMessage: CONFLICT, responseMessage: "already registered")
+                    
                     return
                 }
                 
@@ -103,35 +114,21 @@ class RegistrationHandler: RequestHandler {
             
             else {
                 // bad request, bail out
-                response.setStatus(400, message: "Bad Request")
-                response.requestCompletedCallback()
+                
+                setResponseStatus(response, httpstatusCode: 400, httpstatusMessage: BAD_REQUEST, responseMessage: nil)
                 return
             }
             
-            response.setStatus(201, message: "Created")
             
         } catch {
+            
             print("error decoding json from data: \(reqData)")
-            response.setStatus(400, message: "Bad Request")
+            setResponseStatus(response, httpstatusCode: 400, httpstatusMessage: BAD_REQUEST, responseMessage: nil)
+            return
         }
     
-            do {
-                // encode the random content into JSON
-                let jsonEncoder = JSONEncoder()
-                let respString = try jsonEncoder.encode(["status": statusMessage])
-                
-                // write the JSON to the response body
         
-                response.appendBodyString(respString)
-                response.addHeader("Content-Type", value: "application/json")
-                response.setStatus(200, message: "OK")
-                
-            } catch {
-                response.setStatus(500, message: "Server Error")
-            }
-        
-        response.requestCompletedCallback()
-
+        setResponseStatus(response, httpstatusCode: 201, httpstatusMessage: CREATED, responseMessage: "success")
         
         }
         
@@ -144,7 +141,6 @@ class LoginHandler: RequestHandler {
     func handleRequest(request: WebRequest, response: WebResponse) {
         do {
             
-            var statusMessage = "success"
             let reqData = request.postBodyString
             let jsonDecoder = JSONDecoder() // JSON decoder
             
@@ -170,49 +166,71 @@ class LoginHandler: RequestHandler {
                     guard query.result else {
                         
                         print(query.errormessage)
-                        response.setStatus(401, message: query.errormessage)
-                        statusMessage = "failure"
-                        response.requestCompletedCallback()
+                        
+                        setResponseStatus(response, httpstatusCode: 401, httpstatusMessage: UNAUTHORIZED, responseMessage: "failure")
+                        
                         return
                     }
                     
                 }
                     
                 else {
-                    // bad request, bail out
-                    response.setStatus(400, message: "Bad Request")
-                    response.requestCompletedCallback()
+                
+                    setResponseStatus(response, httpstatusCode: 400, httpstatusMessage: BAD_REQUEST, responseMessage: nil)
+                    
                     return
                 }
                 
                 
             } catch {
-                print("error decoding json from data: \(reqData)")
-                response.setStatus(400, message: "Bad Request")
+                
+                setResponseStatus(response, httpstatusCode: 400, httpstatusMessage: BAD_REQUEST, responseMessage: nil)
+                
+                return
+                
             }
             
             
-            do {
-                // encode the random content into JSON
-                let jsonEncoder = JSONEncoder()
-                let respString = try jsonEncoder.encode(["status": statusMessage])
-                
-                // write the JSON to the response body
-                
-                response.appendBodyString(respString)
-                response.addHeader("Content-Type", value: "application/json")
-                response.setStatus(200, message: "OK")
-            } catch {
-                response.setStatus(500, message: "Server Error")
-            }
-            
-            response.requestCompletedCallback()
+            setResponseStatus(response, httpstatusCode: 200, httpstatusMessage: OK, responseMessage: "success")
             
         }
         
     }
     
+    
+    
 
 
+
+}
+
+func setResponseStatus(response:WebResponse, httpstatusCode:Int,httpstatusMessage:String,responseMessage:String?){
+    
+    do {
+        // encode the random content into JSON
+        let jsonEncoder = JSONEncoder()
+        
+        if let responseMessage = responseMessage {
+            
+            let respString = try jsonEncoder.encode(["status": responseMessage])
+            
+            response.appendBodyString(respString)
+            
+        }
+        
+        
+        // write the JSON to the response body
+        
+        response.addHeader("Content-Type", value: "application/json")
+        response.setStatus(httpstatusCode, message: httpstatusMessage)
+        
+    } catch {
+        
+        response.setStatus(500, message: "Server Error")
+    }
+    
+    response.requestCompletedCallback()
+    
+    
 }
 
